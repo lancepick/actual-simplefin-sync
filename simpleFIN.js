@@ -38,10 +38,11 @@ async function getAccessKey (base64Token) {
   })
 }
 
-async function getTransactionsForCurrentMonth (accessKey) {
+async function getTransactions (accessKey, startDate, endDate) {
   const now = new Date()
-  const startDate = new Date(now.getFullYear(), now.getMonth(), 1)
-  const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1)
+  startDate = startDate || new Date(now.getFullYear(), now.getMonth(), 1)
+  endDate = endDate || new Date(now.getFullYear(), now.getMonth() + 1, 1)
+  console.log(`${startDate.toISOString().split('T')[0]} - ${endDate.toISOString().split('T')[0]}`)
   return await getAccounts(accessKey, startDate, endDate)
 }
 
@@ -84,4 +85,4 @@ async function getAccounts (accessKey, startDate, endDate) {
   })
 }
 
-module.exports = { parseAccessKey, getAccessKey, getAccounts, getTransactionsForCurrentMonth }
+module.exports = { parseAccessKey, getAccessKey, getAccounts, getTransactions }

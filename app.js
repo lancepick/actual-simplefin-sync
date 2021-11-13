@@ -31,9 +31,16 @@ async function run () {
     nconf.set('linkedAccounts', linkedAccounts)
     nconf.save()
   }
-
-  await sync.run(accessKey, budgetId, linkedAccounts)
-
+  const lastSync = nconf.get('lastSync')
+  let startDate
+  if (lastSync) {
+    // Looking back an additional 5 days, this may not be necessary, just trying to make sure we catch any additional 'older' transactions that may have slipped in after our last check.
+    startDate = new Date(lastSync)
+    startDate.setDate(startDate.getDate() - 5)
+  }
+  await sync.run(accessKey, budgetId, linkedAccounts, startDate)
+  nconf.set('lastSync', new Date().toDateString())
+  nconf.save()
   console.log('Complete')
 }
 

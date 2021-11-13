@@ -3,10 +3,11 @@ const api = require('@actual-app/api')
 
 let _accessKey
 let _linkedAccounts
+let _startDate
 
 async function sync () {
   const allAccounts = await api.getAccounts()
-  const allTrans = await simpleFIN.getTransactionsForCurrentMonth(_accessKey)
+  const allTrans = await simpleFIN.getTransactions(_accessKey, _startDate)
   console.log('_____________________________________________________')
   console.log('|          Account          |   Added   |  Updated  |')
   console.log('+---------------------------+-----------+-----------+')
@@ -35,9 +36,10 @@ async function sync () {
   console.log('¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯')
 }
 
-async function run (accessKey, budgetId, linkedAccounts) {
+async function run (accessKey, budgetId, linkedAccounts, startDate) {
   _accessKey = accessKey
   _linkedAccounts = linkedAccounts
+  _startDate = startDate
   return await api.runWithBudget(budgetId, sync)
 }
 
