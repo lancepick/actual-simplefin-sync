@@ -8,7 +8,7 @@ async function run () {
   let token = nconf.get('simpleFIN:token')
   let accessKey = nconf.get('simpleFIN:accessKey')
   let budgetId = nconf.get('actual:budgetId')
-  let linkedAccounts = nconf.get('linkedAccounts')
+  let linkedAccounts = nconf.get('linkedAccounts') || []
 
   const setupRequired = !!nconf.get('setup') || !accessKey || !budgetId
   const linkRequired = setupRequired || !!nconf.get('link') || !linkedAccounts
